@@ -8,7 +8,7 @@ const Project = () => {
 
   const handleDrag = (results) => {
     console.log(results);
-    const { source, destination } = results;
+    const { source, destination} = results;
 
     if (!destination) return;
 
@@ -18,7 +18,23 @@ const Project = () => {
     )
       return;
 
-    if (destination.droppableId === "NEW") {
+      // moving items in the same box(left box)
+      if (source.droppableId === destination.droppableId && source.droppableId === "ROOT") {
+        const reordered = [...storeList];
+        const [removed] = reordered.splice(source.index, 1);
+        reordered.splice(destination.index, 0, removed);
+        return setStoreList(reordered);
+      }
+
+      // moving items in the same box(right box)
+      if (source.droppableId === destination.droppableId && source.droppableId === "NEW") {
+        const reordered = [...newStoreList];
+        const [removed] = reordered.splice(source.index, 1);
+        reordered.splice(destination.index, 0, removed);
+        return setNewStoreList(reordered);
+      }
+// moving items from the left box to the right box
+    if (destination.droppableId === "NEW" && source.droppableId === "ROOT") {
       const reordered = [...storeList];
       const newReordered = [...newStoreList];
       const [removed] = reordered.splice(source.index, 1);
@@ -27,6 +43,7 @@ const Project = () => {
       setStoreList([...reordered]);
     }
 
+    // moving items from the right box to the left box
     if (destination.droppableId === "ROOT") {
       const reordered = [...newStoreList];
       const newReordered = [...storeList];
@@ -37,14 +54,9 @@ const Project = () => {
       setStoreList([...newReordered]);
     }
 
-    // if(type==="final"){
-    //     const reordered = [...storeList];
-    //     const newReordered = [...newStoreList]
-    //     const [removed] = reordered.splice(source.index, 1);
-    //     newReordered.splice(destination.index, 0, removed);
-    //      setNewStoreList([...reordered])
-    //      setStoreList([...newReordered])
-    // }
+    
+
+    
   };
 
   return (
