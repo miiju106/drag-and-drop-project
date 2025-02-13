@@ -8,7 +8,7 @@ const Project = () => {
 
   const handleDrag = (results) => {
     console.log(results);
-    const { source, destination} = results;
+    const { source, destination } = results;
 
     if (!destination) return;
 
@@ -18,22 +18,29 @@ const Project = () => {
     )
       return;
 
-      // moving items in the same box(left box)
-      if (source.droppableId === destination.droppableId && source.droppableId === "ROOT") {
-        const reordered = [...storeList];
-        const [removed] = reordered.splice(source.index, 1);
-        reordered.splice(destination.index, 0, removed);
-        return setStoreList(reordered);
-      }
+    // moving items in the same box(left box)
+    if (
+      source.droppableId === destination.droppableId &&
+      source.droppableId === "ROOT"
+    ) {
+      const reordered = [...storeList];
+      const [removed] = reordered.splice(source.index, 1);
+      reordered.splice(destination.index, 0, removed);
+      return setStoreList(reordered);
+    }
 
-      // moving items in the same box(right box)
-      if (source.droppableId === destination.droppableId && source.droppableId === "NEW") {
-        const reordered = [...newStoreList];
-        const [removed] = reordered.splice(source.index, 1);
-        reordered.splice(destination.index, 0, removed);
-        return setNewStoreList(reordered);
-      }
-// moving items from the left box to the right box
+    // moving items in the same box(right box)
+    if (
+      source.droppableId === destination.droppableId &&
+      source.droppableId === "NEW"
+    ) {
+      const reordered = [...newStoreList];
+      const [removed] = reordered.splice(source.index, 1);
+      reordered.splice(destination.index, 0, removed);
+      return setNewStoreList(reordered);
+    }
+
+    // moving items from the left box to the right box
     if (destination.droppableId === "NEW" && source.droppableId === "ROOT") {
       const reordered = [...storeList];
       const newReordered = [...newStoreList];
@@ -53,14 +60,10 @@ const Project = () => {
       setNewStoreList([...reordered]);
       setStoreList([...newReordered]);
     }
-
-    
-
-    
   };
 
   return (
-    <section className="flex justify-between gap-3 ">
+    <section className="flex justify-between gap-3 container ">
       <DragDropContext onDragEnd={handleDrag}>
         <Droppable droppableId="ROOT">
           {(provided) => (
@@ -69,6 +72,7 @@ const Project = () => {
               {...provided.droppableProps}
               ref={provided.innerRef}
             >
+              <h2>Created Tasks</h2>
               {storeList &&
                 storeList?.map((list, index) => (
                   <Draggable
